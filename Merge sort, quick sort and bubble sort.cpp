@@ -41,7 +41,7 @@ void ef(int l,int r)
 			ri[k]=a[j];
 			k++;
 			j++;
-			x++;
+			x+=mid-i+1;
 		}
 	}
 	while (i<=mid)
