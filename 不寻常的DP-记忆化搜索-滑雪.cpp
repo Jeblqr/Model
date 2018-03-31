@@ -23,9 +23,7 @@ int search(int x,int y)
 	{
 		int ddx=x+dx[i],ddy=y+dy[i];
 		if (ddx>=1&&ddx<=n&&ddy>=1&&ddy<=m&&a[ddx][ddy]>a[x][y])
-		{
 			t=max(t,search(ddx,ddy)+1);
-		}
 	}
 	f[x][y]=t;
 	return t;
