@@ -10,6 +10,7 @@ int main()
 	init();
 	find_answer();
 	print();
+	return 0;
 }
 void init()
 {
