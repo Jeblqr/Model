@@ -5,10 +5,13 @@ long long x=0;
 void ef(int l,int r);
 void kp(int l,int r);
 void mp(int n);
+void tp(int n);
 int main()
 {
 	int n;
 	cin>>n;
+	//tp(n);
+	/*
 	for (int i=1;i<=n;i++) 
 	{
 		cin>>a[i];
@@ -19,7 +22,7 @@ int main()
 	for (int i=1;i<=n;i++) 
 	{
 		cout<<a[i]<<' ';
-	}
+	}*/
 	return 0;
 }
 void ef(int l,int r)
@@ -82,13 +85,22 @@ void mp(int n)
 		for (int j=1;j<n;j++)
 			if (a[j]>a[j+1]) swap(a[j],a[j+1]);
 }
-
-
-
-
-
-
-
-
-
-
+void tp(int n)
+{
+	int dmax=-1;
+	for (int i=1;i<=n;i++)
+	{
+		int l;
+		cin>>l;
+		dmax=max(dmax,l);
+		a[l]++;
+	}
+	for (int i=0;i<=dmax;i++)
+	{
+		while (a[i]!=0)
+		{
+			cout<<i<<' ';
+			a[i]--;
+		}
+	}
+}
