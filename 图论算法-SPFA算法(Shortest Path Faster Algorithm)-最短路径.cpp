@@ -35,7 +35,7 @@ void init()
 }
 int SPFA(int x,int y)
 {
-	ans[1]=0;
+	ans[x]=0;
 	bj.insert(x);
 	que.push_back(x);
 	while (!que.empty())
