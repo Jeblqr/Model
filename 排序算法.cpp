@@ -64,20 +64,20 @@ void ef(int l,int r)
 }
 void kp(int l,int r)
 {
-	int i=l,j=r,mid=(l+r)/2;
-	do
+	int mid=a[(l+r)/2],i=l,j=r;
+	while (i<=j)
 	{
-		while (a[i]<a[mid]) i++;
-		while (a[j]>a[mid]) j--;
-		if (i<=j)
-		{
-			swap(a[i],a[j]);
-			j--;
+		while (a[i]<mid)
 			i++;
-		}
-	}while(i<=j);
-	if (i<r) kp(i,r); 
-	if (l<j) kp(l,j);
+		while (a[j]>mid)
+			j--;
+		if (i<=j)
+			swap(a[i],a[j]),i++,j--;
+	}
+	if (l<j)
+		kp(l,j);
+	if (i<r)
+		kp(i,r);
 }
 void mp(int n)
 {
