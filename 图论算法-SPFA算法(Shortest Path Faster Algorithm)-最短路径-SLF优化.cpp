@@ -14,15 +14,15 @@ using namespace std;
 
 class SPFA
 {
-	class pc
-	{
-		bool ps[Max3];
-		public:
-			bool count(int k);
-			void insert(int k);
-			void clear();
-			bool erase(int k);
-	};
+    class pc
+    {
+	bool ps[Max3];
+	public:
+		bool count(int k);
+		void insert(int k);
+		void clear();
+		bool erase(int k);
+    };
     struct node
     {
         int x,y,v,next;
