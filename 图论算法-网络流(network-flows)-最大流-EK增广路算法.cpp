@@ -39,6 +39,7 @@ void NetworkFlows::build(int x,int y,int v)
 
 void NetworkFlows::init()
 {
+	memset(node,0,sizeof node);
 	int x,y,d;
 	len=1;
 	cin>>n>>m>>s>>t;
