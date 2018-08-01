@@ -80,7 +80,5 @@ void HAA::print()
 int main()
 {
 	HAA k;
-	k.Add();
-	k.print();
 	return 0;
 }
