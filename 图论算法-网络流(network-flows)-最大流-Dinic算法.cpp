@@ -80,6 +80,7 @@ int NetworkFlows::find(int x,int lf)
 				return rlf;
 			}	
 	}
+	return 0;
 }
 
 void NetworkFlows::print()
