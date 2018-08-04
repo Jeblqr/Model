@@ -76,25 +76,5 @@ heap h;
 
 int main()
 {
-	int n;
-	cin>>n;
-	int k;
-	for (int i=1;i<=n;i++)
-	{
-		cin>>k;
-		if (k==1)
-		{
-			cin>>k;
-			h.push(k);
-			continue;
-		}
-		if (k==2)
-		{
-			cout<<h.top()<<endl;
-			continue;
-		}
-		h.pop();
-	}
-	//system("pause");
 	return 0;
 }
