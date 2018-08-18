@@ -27,7 +27,6 @@ void kmp(string s1,string s2)
     }
     cout<<"NO";
     return;
-     
 }
 void getnext(string s,int next[])
 {
