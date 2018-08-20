@@ -30,11 +30,11 @@ void init()
 		cin>>x>>y>>d;
 		setting(x,y,d);
 		setting(y,x,d);
-	}
-	memset(ans,0x7f,sizeof ans);	
+	}	
 }
 int SPFA(int x,int y)
 {
+	memset(ans,0x7f,sizeof ans);
 	ans[x]=0;
 	bj.insert(x);
 	que.push_back(x);
