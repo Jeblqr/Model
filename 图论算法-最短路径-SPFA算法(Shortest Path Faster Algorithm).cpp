@@ -65,7 +65,7 @@ int SPFA::calc(int x,int y)
     {
         int kx=que.front();
         que.pop();
-	pd.erase(kx);
+	 pd.erase(kx);
         for (int i=last[kx];i;i=node[i].next)
         {
             int ky=node[i].y;
