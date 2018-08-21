@@ -14,6 +14,7 @@
 #define Max2 3000000
 using namespace std;
 
+//----------------------------
 class Dijkstra
 {
     
@@ -89,7 +90,7 @@ int Dijkstra::Calc(int x,int y)
     }
     return ans[y]==0x7f7f7f7f?-1:ans[y];
 }
-
+//----------------------------
 
 Dijkstra dij;
 
