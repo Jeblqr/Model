@@ -18,15 +18,6 @@ class Dijkstra
 {
     
     int last[Max1],len,ans[Max1];
-    class pc
-    {
-        bool ps[Max1];
-        public:
-            void clear();
-            bool count(int k);
-            void insert(int k);
-            void erase(int k);
-    };
     struct Node
     {
         int y,d,next;
@@ -36,7 +27,6 @@ class Dijkstra
         int x,d;
         bool operator< (const edge &k) const;
     };
-    pc pd;
     Node node[Max2];
     priority_queue<edge,vector<edge> > que;
     void Make(int x,int y,int d);
@@ -45,14 +35,6 @@ class Dijkstra
         void Scan(int n);
         int Calc(int x,int y);
 };
-
-void Dijkstra::pc::clear(){memset(ps,0,sizeof ps);}
-
-bool Dijkstra::pc::count(int k) {return ps[k];}
-
-void Dijkstra::pc::insert(int k) {ps[k]=1;}
-
-void Dijkstra::pc::erase(int k) {ps[k]=0;}
 
 bool Dijkstra::edge::operator< (const edge &k) const {return d>k.d;}
 
@@ -89,23 +71,19 @@ int Dijkstra::Calc(int x,int y)
     while (que.size())
         que.pop();
     que.push(edge{x,0});
-    pd.clear();
     while (que.size())
     {
-        int kx=que.top().x;
+        int kx=que.top().x,ld=que.top().d;
         que.pop();
-        pd.erase(kx);
+        if (ld!=ans[kx])
+            continue;
         for (int i=last[kx];i;i=node[i].next)
         {
             int ky=node[i].y,kd=node[i].d;
             if (ans[ky]>ans[kx]+kd)
             {
                 ans[ky]=ans[kx]+kd;
-                if (!pd.count(ky))
-                {
-                    pd.insert(ky);
-                    que.push(edge{ky,ans[ky]});
-                }
+                que.push(edge{ky,ans[ky]});
             }
         }
     }
