@@ -11,7 +11,7 @@
 #define Max3 Max1
 using namespace std;
 
-
+//----------------------------
 class SPFA
 {
     class Pc
@@ -65,7 +65,7 @@ int SPFA::calc(int x,int y)
     {
         int kx=que.front();
         que.pop();
-	 pd.erase(kx);
+	    pd.erase(kx);
         for (int i=last[kx];i;i=node[i].next)
         {
             int ky=node[i].y;
@@ -93,7 +93,7 @@ void SPFA::scan(int n)
         MakeLine(y,x,v);
     }
 }
-
+//----------------------------
 
 SPFA spfa;
 
