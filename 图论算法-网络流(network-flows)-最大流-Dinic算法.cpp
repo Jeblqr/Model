@@ -22,10 +22,10 @@ class NetworkFlows
 	int len,last[Max],s,t,n,m,mf;
 	int find(int x,int lf);
 	void build(int x,int y,int v);
+	bool fdinic();
 	public:
 		void init();
 		void dinic();
-		bool fdinic();
 		void print();
 };
 
