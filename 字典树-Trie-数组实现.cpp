@@ -22,6 +22,7 @@ class Trie
 	void init();
 	void add(string s);
 	int query(string s);
+	void erase(string s);
 };
 
 void Trie::init()
@@ -53,6 +54,19 @@ int Trie::query(string s)
 		p = tree[p][s[i] - 'a'];
 	}
 	return mark[p];
+}
+
+void Trie::erase(string s)
+{
+	int p = 0;
+	for (int i = 0; i != s.size(); i++)
+	{
+		if (!tree[p][s[i] - 'a'])
+			tree[p][s[i] - 'a'] = ++len;
+		p = tree[p][s[i] - 'a'];
+	}
+	if (mark[p])
+		mark[p]--;
 }
 //---------------------------------------
 
