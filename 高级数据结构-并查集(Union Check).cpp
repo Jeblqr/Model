@@ -17,10 +17,10 @@ class UnionFind
 		int x,y;
 	}node[1100000];
 	int n,m;
+	int fa[1100000];
 	void init();
 	int find(int k);
 	public:
-		int fa[1100000];
 		void set(int n);
 		void build(int x,int y);
 		int get();
