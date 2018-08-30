@@ -14,18 +14,15 @@ class UnionFind
 {
 	struct Node
 	{
-		int x,y,v;
-		bool operator<(const Node &x) const
-		{
-			return this->v<x.v;
-		}
+		int x,y;
 	}node[1100000];
-	int n,m,fa[1100000];
+	int n,m;
 	void init();
 	int find(int k);
 	public:
+		int fa[1100000];
 		void set(int n);
-		void build(int x,int y,int v);
+		void build(int x,int y);
 		int get();
 		bool check(int x,int y);
 };
@@ -39,7 +36,6 @@ void UnionFind::init()
 {
 	for (int i=1;i<=n;i++)
 		fa[i]=i;
-	sort(node+1,node+m+1);
 }
 
 int UnionFind::find(int k)
@@ -49,10 +45,10 @@ int UnionFind::find(int k)
 	return fa[k];
 }
 
-void UnionFind::build(int x,int y,int v)
+void UnionFind::build(int x,int y)
 {
 	m++;
-	node[m]=Node{x,y,v};
+	node[m]=Node{x,y};
 }
 
 int UnionFind::get()
@@ -63,12 +59,7 @@ int UnionFind::get()
 	{
 		int fx=find(node[i].x),fy=find(node[i].y);
 		if (fx!=fy)
-		{
-			fa[fx]=fy,ans+=node[i].v;
-			t++;
-			if (t==n-1)
-				break;
-		}
+			fa[fx]=fy;
 	}
 	return ans;
 }
@@ -78,6 +69,8 @@ bool UnionFind::check(int x,int y)
 	return find(x)==find(y);
 }
 
+
+UnionFind uf;
 
 int main()
 {
