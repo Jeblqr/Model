@@ -96,9 +96,5 @@ Dijkstra dij;
 
 int main()
 {
-    int n,m;
-    cin>>n>>m;
-    dij.Scan(m);
-    cout<<dij.Calc(1,n);
     return 0;
 }
