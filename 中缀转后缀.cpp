@@ -75,13 +75,13 @@ string ZzToHz(string s)
                 st.push(make_pair(3,s[i]));
                 break;
             default:
-                ans.push_back(s[i]);
+                ans=ans+s[i]+' ';
                 break;	
         }
     }
     while (st.size())
     {
-    	ans.push_back(st.top().second);
+        ans=ans+st.top().second+' ';
         st.pop();
     } 
     return ans;
