@@ -2,7 +2,7 @@
 #include<string>
 #include<cstring>
 #include<algorithm>
-#define Max 1000
+#define Max 100000 
 using namespace std;
 
 class HAA
@@ -254,7 +254,6 @@ ostream &operator<<(ostream &out,HAA &x)
 	return out;
 }
 
+
 int main()
-{
-	return 0;
-}
+{}
