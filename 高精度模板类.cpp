@@ -228,8 +228,6 @@ ostream &operator<<(ostream &out,HAA &x)
 	return out;
 }
 
-HAA a, b, c, d, e;
-
 int main()
 {
 	return 0;
