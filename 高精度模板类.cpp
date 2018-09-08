@@ -13,16 +13,19 @@ class HAA
 	int max(int a, int b);
 public:
 	HAA();
+	HAA(long long s);
 	void init();
 	HAA operator+ (HAA x);
 	HAA operator- (HAA y);
 	HAA operator* (HAA x);
 	HAA operator/ (HAA x);
-	void operator= (std::string s);
+	HAA operator^ (HAA x);
+	void operator= (string s);
 	void operator= (long long s);
 	bool operator== (const HAA &x) const;
 	bool operator> (const HAA &x) const;
 	bool operator< (const HAA &x) const;
+	bool operator!= (const HAA &x) const;
 	void scan();
 	void print();
 	friend istream &operator>>(istream &in,HAA &x);
@@ -121,6 +124,19 @@ HAA HAA::operator* (HAA x)
 HAA HAA::operator/ (HAA x)
 {}
 
+HAA HAA::operator^ (HAA y)
+{
+	HAA ans=1,x=*this;
+	while (x!=HAA(0))
+	{
+		if (y.num[1]&1==0)
+			x=x*x;
+		y=y*x;
+		y=y/2;
+	}
+	return ans;
+}
+
 bool HAA::operator== (const HAA &x) const
 {
 	if (x.IsF!=IsF)
@@ -175,6 +191,11 @@ bool HAA::operator< (const HAA &x) const
 	return 0;
 }
 
+bool HAA::operator!= (const HAA &x) const
+{
+	return !(*this==x);
+}
+
 void HAA::operator= (string s)
 {
 	init();
@@ -214,6 +235,11 @@ void HAA::print()
 		cout<<'-';
 	for (int i = len; i >= 1; i--)
 		cout << num[i];
+}
+
+HAA::HAA(long long s)
+{
+	*this=s;
 }
 
 istream &operator>>(istream &in,HAA &x)
