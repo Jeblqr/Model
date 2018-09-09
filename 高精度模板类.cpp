@@ -22,6 +22,12 @@ class HAA
 	HAA operator/(HAA y);
 	HAA operator^(HAA y);
 	HAA operator%(HAA y);
+	void operator+=(HAA x);
+	void operator-=(HAA x);
+	void operator*=(HAA x);
+	void operator/=(HAA x);
+	void operator++();
+	void operator--();
 	HAA QucklyPow(HAA y);
 	void operator=(string s);
 	void operator=(long long s);
@@ -138,6 +144,36 @@ HAA HAA::operator^(HAA y)
 	while (y != HAA(0))
 		tmp = tmp * *this, y = y - 1;
 	return tmp;
+}
+
+void HAA::operator+=(HAA x)
+{
+	*this = *this + x;
+}
+
+void HAA::operator-=(HAA x)
+{
+	*this = *this - x;
+}
+
+void HAA::operator*=(HAA x)
+{
+	*this = *this * x;
+}
+
+void HAA::operator/=(HAA x)
+{
+	*this = *this / x;
+}
+
+void HAA::operator++()
+{
+	*this = *this + HAA(1);
+}
+
+void HAA::operator--()
+{
+	*this = *this - HAA(1);
 }
 
 HAA HAA::QucklyPow(HAA y) //bug
