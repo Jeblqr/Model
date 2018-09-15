@@ -22,13 +22,15 @@ class HAA
 	HAA operator/(HAA y);
 	HAA operator^(HAA y);
 	HAA operator%(HAA y);
+	HAA operator>>(unsigned long long k);
+	HAA operator<<(unsigned long long k);
 	void operator+=(HAA x);
 	void operator-=(HAA x);
 	void operator*=(HAA x);
 	void operator/=(HAA x);
 	void operator++();
 	void operator--();
-	HAA QucklyPow(HAA y);
+	HAA QuicklyPow(HAA y);
 	void operator=(string s);
 	void operator=(long long s);
 	bool operator==(const HAA &x) const;
@@ -129,13 +131,53 @@ HAA HAA::operator*(HAA x)
 	return tmp;
 }
 
-HAA HAA::operator/(HAA y)
+HAA HAA::operator>>(unsigned long long k)
 {
-	HAA tmp, x = *this;
-	while (x > HAA(0))
+	HAA ans;
+	for (unsigned long long i = k + 1; i <= len; i++)
+		ans.num[i - k] = num[i];
+	ans.len = len - k;
+	return ans;
+}
+
+HAA HAA::operator<<(unsigned long long k)
+{
+	HAA ans;
+	for (unsigned long long i = k + 1; i <= len + k; i++)
+		ans.num[i]=num[i - k];
+	ans.len = len + k;
+	return ans;
+}
+
+HAA HAA::operator/(HAA y)//bug
+{
+	if (y == HAA(0))
+		return HAA(0);
+	if (*this < y)
+		return HAA(0);
+	HAA tmp, x = *this, ans;
+	/*while (x > HAA(0))
 		x = x - y, tmp = tmp + 1;
 	tmp = tmp - 1;
-	return tmp > 0 ? tmp : HAA(0);
+	return tmp > 0 ? tmp : HAA(0);*/
+	ans.len=len-y.len+1;
+	for (unsigned long long i = ans.len; i >= 0;i--)
+	{
+		if (x == HAA(0))
+			break;
+		tmp = y << i;
+		while (tmp < x || tmp == x)
+			ans.num[i+1] = ans.num[i+1] + 1,x = x - tmp;
+	}
+	while (ans.num[ans.len] == 0 && ans.len > 0)
+		ans.len--;
+	if (ans.len == 0)
+		ans.len = 1;
+	if (IsF != y.IsF)
+		ans.IsF = 1;
+	else
+		ans.IsF = 0;
+	return ans;
 }
 
 HAA HAA::operator^(HAA y)
@@ -176,15 +218,14 @@ void HAA::operator--()
 	*this = *this - HAA(1);
 }
 
-HAA HAA::QucklyPow(HAA y) //bug
+HAA HAA::QuicklyPow(HAA y) //bug
 {
 	HAA ans = 1, x = *this;
-	y = y + 1;
 	while (y != HAA(0))
 	{
-		if (y.num[1] & 1 == 0)
-			x = x * x;
-		ans = ans * x;
+		if (y.num[1] & 1 == 1)
+			ans = ans * x;
+		x = x * x;
 		y = y / 2;
 	}
 	return ans;
@@ -192,7 +233,7 @@ HAA HAA::QucklyPow(HAA y) //bug
 
 HAA HAA::operator%(HAA y) //bug
 {
-	return ((*this) - (y * ((*this) / y)));
+	return ((*this) - ((*this) / y * y));
 }
 
 bool HAA::operator==(const HAA &x) const
@@ -312,6 +353,7 @@ ostream &operator<<(ostream &out, HAA &x)
 	x.print();
 	return out;
 }
+
 
 int main()
 {
