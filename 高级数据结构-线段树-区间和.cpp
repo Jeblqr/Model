@@ -24,9 +24,6 @@ class St
 		long long query(long long root,long long l,long long r,long long i,long long j);
 };
 
-
-
-
 inline long long St::L(long long x){return x<<1;}
 
 inline long long St::R(long long x){return L(x)|1;}
