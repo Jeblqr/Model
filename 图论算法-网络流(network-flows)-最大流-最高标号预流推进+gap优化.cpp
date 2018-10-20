@@ -121,7 +121,7 @@ bool HLPP::Bfs()
         int x = Q.front();
         Q.pop();
         for (int i = last[x], y = edge[i].y; i; i = edge[i].next, y = edge[i].y)
-            if (high[y] > high[x] + 1 && edge[i].d)
+            if (high[y] > high[x] + 1 && edge[i^1].d)
                 high[y] = high[x] + 1, Q.push(y);
     }
     return high[s] != 0x3f3f3f3f;
@@ -153,7 +153,7 @@ int HLPP::Calc()
         return -1;
     high[s] = n;
     for (int i = 1; i <= n; i++)
-        if (high[i] != 0x3f3f3f3f)
+        if (high[i] < 0x3f3f3f3f)
             gap[high[i]]++;
     PushFrist();
     while (!que.empty())
