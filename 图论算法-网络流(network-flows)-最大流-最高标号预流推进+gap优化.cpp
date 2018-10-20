@@ -80,7 +80,7 @@ int HLPP::operator()(int s, int t)
 void HLPP::Gap(int h)
 {
     for (int i = 1; i <= n; i++)
-        if (i != s && i != t && high[i] > h && high[i] <= n)
+        if (i != s && i != t && high[i] > h && high[i] < n + 1)
             high[i] = n + 1;
 }
 
@@ -121,7 +121,7 @@ bool HLPP::Bfs()
         int x = Q.front();
         Q.pop();
         for (int i = last[x], y = edge[i].y; i; i = edge[i].next, y = edge[i].y)
-            if (high[y] > high[x] + 1 && edge[i^1].d)
+            if (high[y] > high[x] + 1 && edge[i ^ 1].d)
                 high[y] = high[x] + 1, Q.push(y);
     }
     return high[s] != 0x3f3f3f3f;
@@ -159,18 +159,17 @@ int HLPP::Calc()
     while (!que.empty())
     {
         int x = que.top().x;
+        vis[x] = 0;
         que.pop();
         Push(x);
         if (prs[x] == 0)
             continue;
-        if (x != s && x != t && prs[x])
-        {
-            if (--gap[high[x]] == 0)
-                Gap(high[x]);
-            Relable(x);
-            ++gap[high[x]];
-            que.push(Node{x, high[x]});
-        }
+        if (--gap[high[x]] == 0)
+            Gap(high[x]);
+        Relable(x);
+        ++gap[high[x]];
+        que.push(Node{x, high[x]});
+        vis[x] = 1;
     }
     return prs[t];
 }
