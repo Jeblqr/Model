@@ -10,6 +10,8 @@
 #include<map>
 using namespace std;
 
+
+//------------------------------------------------
 class AC
 {
 	const int ROOT;
@@ -62,14 +64,13 @@ void AC::Instead(string s)
 void AC::MakeFail()
 {
 	queue<int> que;
-	for (int i=0;i<=25;i++)
-		if (node[ROOT][i])
+	for (int i=0;i!=26;i++)
+		if (node[ROOT][i]!=0)
 			que.push(node[ROOT][i]);
 	while (!que.empty())
 	{
-		int p=que.front();
-		que.pop();
-		for (int i=0;i<=25;i++)
+		int p=que.front();que.pop();
+		for (int i=0;i!=26;i++)
 		{
 			if (node[p][i]!=0)
 			{
@@ -86,15 +87,20 @@ void AC::MakeFail()
 
 int AC::Query(string s)
 {
-	int p=ROOT,ans=0;
+	int ans=0,p=ROOT;
 	for (int i=0;i!=s.size();i++)
 	{
 		p=node[p][s[i]-'a'];
 		for (int k=p;k!=0&&cnt[k]!=0;k=fail[k])
-			ans+=cnt[k],cnt[k]=0;
+		{
+			ans+=cnt[k];
+			cnt[k]=0;
+		}
 	}
 	return ans;
 }
+//------------------------------------------------
+
 
 AC ac;
 
