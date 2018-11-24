@@ -146,6 +146,8 @@ FHQ_Treap t;
 
 int main()
 {
+	/*
+	//https://www.luogu.org/problemnew/show/P3369
 	int n;
 	cin>>n;
 	while (n--)
@@ -174,5 +176,6 @@ int main()
 				break;
 		}
 	}
+	*/
 	return 0;
 }
