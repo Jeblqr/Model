@@ -12,20 +12,27 @@ using namespace std;
 
 class AC
 {
-	#define ROOT 0
+	const int ROOT;
 	struct Node
-	{
+	{   
 		int alpha[26];
 		inline int &operator[] (int k);
 	};
 	Node node[1000000];
 	int cnt[1000000],fail[1000000],len;
+	
 	public:
+		AC();
 		void Init();
 		void Instead(string s);
 		void MakeFail();
 		int Query(string s);
 };
+
+AC::AC():ROOT(0)
+{
+	Init();
+}
 
 int& AC::Node::operator[] (int k)
 {
@@ -89,7 +96,24 @@ int AC::Query(string s)
 	return ans;
 }
 
+AC ac;
+
 int main()
 {
-  return 0;
-}
+	/*
+	//Example in Luogu P3808
+	int n;
+	cin>>n;
+	for (int i=1;i<=n;i++)
+	{
+		string s;
+		cin>>s;
+		ac.Instead(s);
+	}
+	ac.MakeFail();
+	string s;
+	cin>>s;
+	cout<<ac.Query(s);
+	*/
+	return 0;
+} 
