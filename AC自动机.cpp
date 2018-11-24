@@ -26,7 +26,7 @@ class AC
 	public:
 		AC();
 		void Init();
-		void Instead(string s);
+		void Insert(string s);
 		void MakeFail();
 		int Query(string s);
 };
@@ -49,7 +49,7 @@ void AC::Init()
 	len=0;
 }
 
-void AC::Instead(string s)
+void AC::Insert(string s)
 {
 	int p=ROOT;
 	for (int i=0;i!=s.size();i++)
@@ -114,7 +114,7 @@ int main()
 	{
 		string s;
 		cin>>s;
-		ac.Instead(s);
+		ac.Insert(s);
 	}
 	ac.MakeFail();
 	string s;
