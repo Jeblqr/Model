@@ -1,7 +1,7 @@
 #include<iostream>
 using namespace std;
 
-
+//-------------------
 class FHQ_Treap
 {
 	int ROOT,seed,len;
@@ -29,7 +29,7 @@ class FHQ_Treap
 
 int FHQ_Treap::Rand()
 {
-	return seed=abs((seed%2147483647*seed%2147483647+1476)%2147483647);
+	return seed=(seed=((seed%2147483647*seed%2147483647+1476)%2147483647))<0?-seed:seed;
 }
 
 int FHQ_Treap::New(int val)
