@@ -14,7 +14,6 @@ class FHQ_Treap
 	int New(int val);
 	void Update(int x);
 	void SplitByValue(int root,int k,int &x,int &y);
-	void SplitByRank(int root,int k,int &x,int &y);
 	int Merge(int x,int y);
 	public:
 		FHQ_Treap():seed(233333){};
@@ -64,26 +63,6 @@ void FHQ_Treap::SplitByValue(int root,int k,int &x,int &y)
 	Update(root);
 }
 
-void FHQ_Treap::SplitByRank(int root,int k,int &x,int &y)
-{
-	if (root==0)
-	{
-		x=y=0;
-		return ;
-	}
-	if (node[root].size<k)
-	{
-		x=root;
-		SplitByRank(node[root].y,k,node[root].y,y);
-	}
-	else
-	{
-		y=root;
-		SplitByRank(node[root].x,k,x,node[root].x);
-	}
-	Update(root);
-}
-
 int FHQ_Treap::Merge(int x,int y)
 {
 	if (x==0||y==0)
@@ -122,8 +101,8 @@ int FHQ_Treap::Rank(int val)
 {
 	int x=0,y=0;
 	SplitByValue(ROOT,val-1,x,y);
-	int rank=node[x].size;
-	Merge(x,y);
+	int rank=node[x].size+1;
+	ROOT=Merge(x,y);
 	return rank;
 }
 
@@ -136,7 +115,7 @@ int FHQ_Treap::Find_K_Th(int root,int k)
 {
 	while (node[node[root].x].size+1!=k)
 	{
-		if (node[node[root].x].size+1!=k)
+		if (node[node[root].x].size<=k)
 			root=node[root].x;
 		else
 			k-=node[node[root].x].size+1,root=node[root].y;
