@@ -28,7 +28,7 @@ class FHQ_Treap
 
 int FHQ_Treap::Rand()
 {
-	return seed=(seed=((seed%2147483647*seed%2147483647+1476)%2147483647))<0?-seed:seed;
+	return seed=((seed*seed)+378593)*seed;
 }
 
 int FHQ_Treap::New(int val)
@@ -115,7 +115,7 @@ int FHQ_Treap::Find_K_Th(int root,int k)
 {
 	while (node[node[root].x].size+1!=k)
 	{
-		if (node[node[root].x].size<=k)
+		if (k<=node[node[root].x].size)
 			root=node[root].x;
 		else
 			k-=node[node[root].x].size+1,root=node[root].y;
