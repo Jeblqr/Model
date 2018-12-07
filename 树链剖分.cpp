@@ -39,11 +39,11 @@ void HeavyPathDecomposition::Get(int x)
 	{
 		if (father[x]==y)
 			continue;
-		depth[x]=depth[y];
+		depth[y]=depth[x]+1;
 		father[y]=x;
 		Get(y);
 		size[x]+=size[y];
-		if (size[son[x]]<=size[y])
+		if (son[x]==0||size[son[x]]<=size[y])
 			son[x]=y;
 	}
 }
@@ -72,7 +72,7 @@ void HeavyPathDecomposition::Calc(int ROOT)
 
 HeavyPathDecomposition::Data HeavyPathDecomposition::GetData(int k) const
 {
-	Data data={size[N*2],top[N*2],son[N*2],depth[N*2],father[N*2],id[N*2]};
+	Data data={size[k],top[k],son[k],depth[k],father[k],id[k]};
 	return data;
 }
 //-----------------------------
@@ -92,10 +92,10 @@ int main()
 		cin>>x>>y;
 		while (T.GetData(x).top!=T.GetData(y).top)
 		{
-			if (T.GetData(x).depth>=(T.GetData(y).depth))
-				x=T.GetData(x).father;
+			if (T.GetData(T.GetData(x).top).depth>=T.GetData(T.GetData(y).top).depth)
+				x=T.GetData(T.GetData(x).top).father;
 			else
-			 	y=T.GetData(y).father;
+			 	y=T.GetData(T.GetData(y).top).father;
 		}
 		cout<<(T.GetData(x).depth<T.GetData(y).depth?x:y)<<endl;
 	}
