@@ -1,4 +1,5 @@
 #include<iostream>
+#include<cstdio>
 #define N 500005
 using namespace std;
 
@@ -28,7 +29,7 @@ class HeavyPathDecomposition
 void HeavyPathDecomposition::Add(int x,int y,int val)
 {
 	len++;
-	node[len]={y,val};
+	node[len]={y,val,last[x]};
 	last[x]=len;
 }
 
@@ -82,14 +83,35 @@ HeavyPathDecomposition T;
 
 int main()
 {
+	auto in=[]()
+	{
+		int f=0,p=1;
+		char c;
+		c=getchar();
+		while (c<'0'||c>'9')
+		{
+			if (c=='-')
+				p=-1;
+			c=getchar();
+		}
+		while (c>='0'&&c<='9')
+		{
+			f=f*10+c-'0';
+			c=getchar();
+		}
+		return f*p;
+	};
 	int n,m,s;
-	cin>>n>>m>>s;
+	n=in();
+	m=in();
+	s=in();
 	for (int i=1,x,y;i<n;i++)
-		cin>>x>>y,T.Add(x,y,0),T.Add(y,x,0);
+		x=in(),y=in(),T.Add(x,y,0),T.Add(y,x,0);
 	T.Calc(s);
 	for (int i=1,x,y;i<=m;i++)
 	{
-		cin>>x>>y;
+		x=in();
+		y=in();
 		while (T.GetData(x).top!=T.GetData(y).top)
 		{
 			if (T.GetData(T.GetData(x).top).depth>=T.GetData(T.GetData(y).top).depth)
