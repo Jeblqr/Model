@@ -12,8 +12,8 @@ class Treap
 	};
 	Node node[1000001];
 	int tot, seed;
-	inline void zig(int &root);
-	inline void zag(int &root);
+	inline void lTurn(int &root);
+	inline void rTurn(int &root);
 	inline int rand();
 	inline void newNode(int &root, int k);
 	inline void update(int root, int new_root);
@@ -27,7 +27,7 @@ class Treap
 	int Pre(int root, int k);
 	int Nxt(int root, int k);
 };
-inline void Treap::zig(int &root)
+inline void Treap::lTurn(int &root)
 {
 	int new_root = node[root].r;
 	node[root].r = node[new_root].l;
@@ -35,7 +35,7 @@ inline void Treap::zig(int &root)
 	update(root, new_root);
 	root = new_root;
 }
-inline void Treap::zag(int &root)
+inline void Treap::rTurn(int &root)
 {
 	int new_root = node[root].l;
 	node[root].l = node[new_root].r;
@@ -74,13 +74,13 @@ void Treap::Insert(int &root, int k)
 	{
 		Insert(node[root].l, k);
 		if (node[node[root].l].d > node[root].d)
-			zag(root);
+			rTurn(root);
 	}
 	else
 	{
 		Insert(node[root].r, k);
 		if (node[node[root].r].d > node[root].d)
-			zig(root);
+			lTurn(root);
 	}
 }
 void Treap::Delete(int &root, int k)
@@ -103,12 +103,12 @@ void Treap::Delete(int &root, int k)
 		}
 		if (node[node[root].l].d < node[node[root].r].d)
 		{
-			zig(root);
+			lTurn(root);
 			Delete(root, k);
 		}
 		else
 		{
-			zag(root);
+			rTurn(root);
 			Delete(root, k);
 		}
 		return;
