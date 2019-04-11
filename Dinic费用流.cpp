@@ -13,7 +13,7 @@ using namespace std;
 
 
 //--------------------------------------------
-class ZKW
+class Dinic
 {
     struct Node
     {
@@ -31,12 +31,12 @@ class ZKW
     bool SPFA(int s,int t);
     int DFS(int x,int flow,int t);
     public:
-    	ZKW();
+    	Dinic();
     	void Add(int x,int y,int flow,int cost);
         Data Calc(int s,int t);
 };
 
-bool ZKW::SPFA(int s,int t)
+bool Dinic::SPFA(int s,int t)
 {
     queue<int> que;
     memset(vis,0,sizeof vis);
@@ -62,7 +62,7 @@ bool ZKW::SPFA(int s,int t)
     return dis[t]!=0x3f3f3f3f;
 }
 
-int ZKW::DFS(int x,int flow,int t)
+int Dinic::DFS(int x,int flow,int t)
 {
     vis[x]=1;
     if (x==t)	
@@ -86,18 +86,18 @@ int ZKW::DFS(int x,int flow,int t)
     return used;
 }
 
-ZKW::ZKW():len(1)
+Dinic::Dinic():len(1)
 {
 }
 
-void ZKW::Add(int x,int y,int flow,int cost)
+void Dinic::Add(int x,int y,int flow,int cost)
 {
     len++;
     node[len]={y,last[x],flow,cost};
     last[x]=len;
 }
 
-ZKW::Data ZKW::Calc(int s,int t)
+Dinic::Data Dinic::Calc(int s,int t)
 {
     data={};
     while (SPFA(t,s)==1)
@@ -114,7 +114,7 @@ ZKW::Data ZKW::Calc(int s,int t)
 //-----------------------------------------
 
 
-ZKW zkw;
+Dinic dinic;
 
 int main()
 {
