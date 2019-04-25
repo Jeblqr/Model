@@ -95,6 +95,9 @@ void Dinic::Add(int x,int y,int flow,int cost)
     len++;
     node[len]={y,last[x],flow,cost};
     last[x]=len;
+    len++;
+    node[len]={x,last[y],0,-cost};
+    last[y]=len;
 }
 
 Dinic::Data Dinic::Calc(int s,int t)
