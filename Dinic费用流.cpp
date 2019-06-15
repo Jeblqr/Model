@@ -1,60 +1,54 @@
-#include<iostream>
-#include<cstring>
-#include<cstdio>
-#include<string>
-#include<cstdlib>
-#include<algorithm>
-#include<set>
-#include<queue>
-#include<vector>
-#include<map>
-#define N 1100000
+#include<bits/stdc++.h>
 using namespace std;
 
 
-//--------------------------------------------
+//----------------------------------------------
 class Dinic
 {
     struct Node
     {
-        int y,next,flow,cost;
+        int y,next,f,c;
     };
-    struct Data
-    {
-    	int maxflow,cost;
-    };
-    Node node[N];
-    Data data;
-    bool vis[N];
-    int dis[N];
-    int len,last[N];
-    bool SPFA(int s,int t);
-    int DFS(int x,int flow,int t);
+    Node node[1000001];
+    queue<int> que;
+    bool vis[1000001];
+    int dis[1000001],last[1000001],tot;
+    bool SPFA_Min();
+    bool SPFA_Max();
+    int dfs(int x,int flow);
     public:
-    	Dinic();
-    	void Add(int x,int y,int flow,int cost);
-        Data Calc(int s,int t);
+        Dinic():tot(1) {};
+        int s,t,cost,maxflow;
+        void add(int x,int y,int f,int c);
+        void add(int x,int y,int f);
+        void calc(int opt);
+        /*
+        // if opt == 1 it's mincost
+		// if opt == 2 it's maxcost 
+        */
 };
 
-bool Dinic::SPFA(int s,int t)
+bool Dinic::SPFA_Min()
 {
-    queue<int> que;
     memset(vis,0,sizeof vis);
     memset(dis,0x3f,sizeof dis);
-    que.push(s);
+    while (!que.empty())
+        que.pop();
     vis[s]=1;
     dis[s]=0;
+    que.push(s);
     while (!que.empty())
     {
         int x=que.front();
         que.pop();
         vis[x]=0;
-        for (int i=last[x],y=node[i].y;i;i=node[i].next,y=node[i].y)
+        for (int i=last[x];i;i=node[i].next)
         {
-            if (node[i^1].flow>0&&dis[y]>dis[x]-node[i].cost)
+            int y=node[i].y;
+            if (node[i].f&&dis[y]>dis[x]+node[i].c)
             {
-                dis[y]=dis[x]-node[i].cost;
-                if (vis[y]==0)
+                dis[y]=dis[x]+node[i].c;
+                if (!vis[y])
                     vis[y]=1,que.push(y);
             }
         }
@@ -62,64 +56,251 @@ bool Dinic::SPFA(int s,int t)
     return dis[t]!=0x3f3f3f3f;
 }
 
-int Dinic::DFS(int x,int flow,int t)
+bool Dinic::SPFA_Max()
+{
+	{
+    memset(vis,0,sizeof vis);
+    memset(dis,-1,sizeof dis);
+    while (!que.empty())
+        que.pop();
+    vis[s]=1;
+    dis[s]=0;
+    que.push(s);
+    while (!que.empty())
+    {
+        int x=que.front();
+        que.pop();
+        vis[x]=0;
+        for (int i=last[x];i;i=node[i].next)
+        {
+            int y=node[i].y;
+            if (node[i].f&&dis[y]<dis[x]+node[i].c)
+            {
+                dis[y]=dis[x]+node[i].c;
+                if (!vis[y])
+                    vis[y]=1,que.push(y);
+            }
+        }
+    }
+    return dis[t]!=0x3f3f3f3f;
+}
+}
+
+int Dinic::dfs(int x,int flow)
 {
     vis[x]=1;
-    if (x==t)	
+    if (x==t)
         return flow;
-    int used=0;
-    for (int i=last[x],y=node[i].y;i;i=node[i].next,y=node[i].y)
+    int used=0,k;
+    for (int i=last[x];i;i=node[i].next)
     {
-        if (vis[y]==0&&node[i].flow!=0&&dis[y]==dis[x]-node[i].cost)
+        int y=node[i].y;
+        if (!vis[y]&&node[i].f&&dis[y]==dis[x]+node[i].c)
         {
-            int k=DFS(y,min(flow-used,node[i].flow),t);
-            if (k!=0)
+            if (k=dfs(y,min(flow-used,node[i].f)))
             {
-                data.cost+=k*node[i].cost;
                 used+=k;
-                node[i].flow-=k,node[i^1].flow+=k;
+                cost+=node[i].c*k;
+                node[i].f-=k,node[i^1].f+=k;
+                if (used==flow)
+                    break;
             }
-            if (flow==used)
-                break;
         }
     }
     return used;
 }
 
-Dinic::Dinic():len(1)
+void Dinic::add(int x,int y,int f,int c)
 {
+    node[++tot]={y,last[x],f,c};
+    last[x]=tot;
+    node[++tot]={x,last[y],0,-c};
+    last[y]=tot;
 }
 
-void Dinic::Add(int x,int y,int flow,int cost)
+void Dinic::add(int x,int y,int f)
 {
-    len++;
-    node[len]={y,last[x],flow,cost};
-    last[x]=len;
-    len++;
-    node[len]={x,last[y],0,-cost};
-    last[y]=len;
+    node[++tot]={y,last[x],f,1};
+    last[x]=tot;
+    node[++tot]={x,last[y],0,-1};
+    last[y]=tot;
 }
 
-Dinic::Data Dinic::Calc(int s,int t)
+void Dinic::calc(int opt)
 {
-    data={};
-    while (SPFA(t,s)==1)
+    maxflow=cost=0;
+    if (opt==1)
     {
-        vis[t]=1;
-        while (vis[t]==1)
-        {
-            memset(vis,0,sizeof vis);
-            data.maxflow+=DFS(s,0x3f3f3f3f,t);
-        }
-    }
-    return data;
+	    while (SPFA_Min())
+	    {
+	        vis[t]=1;
+	        while (vis[t])
+	            memset(vis,0,sizeof vis),maxflow+=dfs(s,0x7f7f7f7f);
+	    }
+	}
+    else
+    {
+    	while (SPFA_Max())
+	    {
+	        vis[t]=1;
+	        while (vis[t])
+	            memset(vis,0,sizeof vis),maxflow+=dfs(s,0x7f7f7f7f);
+	    }
+	}
 }
-//-----------------------------------------
+//----------------------------------------------
 
 
 Dinic dinic;
 
 int main()
 {
+    int n,m;
+    cin>>n>>m>>dinic.s>>dinic.t;
+    for (int i=1,x,y,f,c;i<=m;i++)
+        cin>>x>>y>>f>>c,dinic.add(x,y,f,c);
+    dinic.calc(1);
+    cout<<dinic.maxflow<<' '<<dinic.cost;
     return 0;
 }
+
+
+
+/*
+#include <bits/stdc++.h>
+using namespace std;
+
+//----------------------------------------------
+class Dinic {
+    struct Node {
+        int y, next, f, c;
+    };
+    Node node[1000001];
+    queue<int> que;
+    bool vis[1000001];
+    int dis[1000001], last[1000001], tot;
+    bool SPFA_Min();
+    bool SPFA_Max();
+    int dfs(int x, int flow);
+
+public:
+    Dinic() : tot(1){};
+    int s, t, cost, maxflow;
+    void add(int x, int y, int f, int c);
+    void add(int x, int y, int f);
+    void calc(int opt);
+    /*
+    // if opt == 1 it's mincost
+            // if opt == 2 it's maxcost
+    */
+};
+
+bool Dinic::SPFA_Min() {
+    memset(vis, 0, sizeof vis);
+    memset(dis, 0x3f, sizeof dis);
+    while (!que.empty()) que.pop();
+    vis[s] = 1;
+    dis[s] = 0;
+    que.push(s);
+    while (!que.empty()) {
+        int x = que.front();
+        que.pop();
+        vis[x] = 0;
+        for (int i = last[x]; i; i = node[i].next) {
+            int y = node[i].y;
+            if (node[i].f && dis[y] > dis[x] + node[i].c) {
+                dis[y] = dis[x] + node[i].c;
+                if (!vis[y])
+                    vis[y] = 1, que.push(y);
+            }
+        }
+    }
+    return dis[t] != 0x3f3f3f3f;
+}
+
+bool Dinic::SPFA_Max() {
+    {
+        memset(vis, 0, sizeof vis);
+        memset(dis, -1, sizeof dis);
+        while (!que.empty()) que.pop();
+        vis[s] = 1;
+        dis[s] = 0;
+        que.push(s);
+        while (!que.empty()) {
+            int x = que.front();
+            que.pop();
+            vis[x] = 0;
+            for (int i = last[x]; i; i = node[i].next) {
+                int y = node[i].y;
+                if (node[i].f && dis[y] < dis[x] + node[i].c) {
+                    dis[y] = dis[x] + node[i].c;
+                    if (!vis[y])
+                        vis[y] = 1, que.push(y);
+                }
+            }
+        }
+        return dis[t] != 0x3f3f3f3f;
+    }
+}
+
+int Dinic::dfs(int x, int flow) {
+    vis[x] = 1;
+    if (x == t)
+        return flow;
+    int used = 0, k;
+    for (int i = last[x]; i; i = node[i].next) {
+        int y = node[i].y;
+        if (!vis[y] && node[i].f && dis[y] == dis[x] + node[i].c) {
+            if (k = dfs(y, min(flow - used, node[i].f))) {
+                used += k;
+                cost += node[i].c * k;
+                node[i].f -= k, node[i ^ 1].f += k;
+                if (used == flow)
+                    break;
+            }
+        }
+    }
+    return used;
+}
+
+void Dinic::add(int x, int y, int f, int c) {
+    node[++tot] = { y, last[x], f, c };
+    last[x] = tot;
+    node[++tot] = { x, last[y], 0, -c };
+    last[y] = tot;
+}
+
+void Dinic::add(int x, int y, int f) {
+    node[++tot] = { y, last[x], f, 1 };
+    last[x] = tot;
+    node[++tot] = { x, last[y], 0, -1 };
+    last[y] = tot;
+}
+
+void Dinic::calc(int opt) {
+    maxflow = cost = 0;
+    if (opt == 1) {
+        while (SPFA_Min()) {
+            vis[t] = 1;
+            while (vis[t]) memset(vis, 0, sizeof vis), maxflow += dfs(s, 0x7f7f7f7f);
+        }
+    } else {
+        while (SPFA_Max()) {
+            vis[t] = 1;
+            while (vis[t]) memset(vis, 0, sizeof vis), maxflow += dfs(s, 0x7f7f7f7f);
+        }
+    }
+}
+//----------------------------------------------
+
+Dinic dinic;
+
+int main() {
+    int n, m;
+    cin >> n >> m >> dinic.s >> dinic.t;
+    for (int i = 1, x, y, f, c; i <= m; i++) cin >> x >> y >> f >> c, dinic.add(x, y, f, c);
+    dinic.calc(1);
+    cout << dinic.maxflow << ' ' << dinic.cost;
+    return 0;
+}
+*/
