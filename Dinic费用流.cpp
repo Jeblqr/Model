@@ -189,10 +189,6 @@ public:
     void add(int x, int y, int f, int c);
     void add(int x, int y, int f);
     void calc(int opt);
-    /*
-    // if opt == 1 it's mincost
-            // if opt == 2 it's maxcost
-    */
 };
 
 bool Dinic::SPFA_Min() {
