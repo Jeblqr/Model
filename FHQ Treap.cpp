@@ -3,34 +3,32 @@ using namespace std;
 
 class FHQ_Treap
 {
-    #define Maxn 100001
-    //the ROOT of the tree, the number of members of the tree, the seed of rand()
+#define Maxn 100001
     int ROOT, len, seed;
-    struct Node //the node of the tree
+    struct Node
     {
-        //the value of this node, the rand() of the node,
-        //the size of this sub tree, the left and right sub tree of this tree
         int val, d, size, x, y;
     } node[Maxn];
     int rand();
-    int newNode(int val);                        //create a new node with the value is val, and return the number of the new node
-    void update(int root);                       //update the node root
-    void split(int root, int k, int &x, int &y); //split the tree root with k
-    int merge(int x, int y);                     //merge tree x and tree y and return the new tree
-    int find_kth(int root, int k);               //find a node whose rank is k in the tree root
-    public:
-    FHQ_Treap() : seed(20050103){}; //initialize seed
-        void ins(int val);              //insert a new node and initialize it as val
-        void del(int val);              //delete a node whose value is val
-        int rank(int val);              //find the rank of the node whose value is val
-        int find_kth(int k);            //find a node whose rank is k
-        int pre(int val);               //find the precursor of the node whose value is val
-        int nxt(int val);               //find the next one of the node whose value is val
+    int newNode(int val);
+    void update(int root);
+    void split(int root, int k, int &x, int &y);
+    int merge(int x, int y);
+    int find_kth(int root, int k);
+
+public:
+    FHQ_Treap() : seed(20050103){};
+    void ins(int val);
+    void del(int val);
+    int rank(int val);
+    int find_kth(int k);
+    int pre(int val);
+    int nxt(int val);
 };
 
 int FHQ_Treap::rand()
 {
-    return int(seed=seed*428711ll%2147483647);
+    return int(seed = seed * 428711ll % 2147483647);
 }
 
 int FHQ_Treap::newNode(int val)
@@ -54,12 +52,12 @@ void FHQ_Treap::split(int root, int k, int &x, int &y)
     if (node[root].val <= k)
     {
         x = root;
-        split(node[root].y, k, node[root].y, y);
+        split(node[x].y, k, node[x].y, y);
     }
     else
     {
         y = root;
-        split(node[root].x, k, x, node[root].x);
+        split(node[y].x, k, x, node[y].x);
     }
     update(root);
 }
@@ -81,16 +79,15 @@ int FHQ_Treap::merge(int x, int y)
         return y;
     }
 }
+
 int FHQ_Treap::find_kth(int root, int k)
 {
-    while (node[node[root].x].size + 1 != k)
-    {
-        if (k <= node[node[root].x].size)
-            root = node[root].x;
-        else
-            k -= node[node[root].x].size + 1, root = node[root].y;
-    }
-    return root;
+    if (k == node[node[root].x].size + 1)
+        return root;
+    if (k <= node[node[root].x].size)
+        return find_kth(node[root].x, k);
+    else
+        return find_kth(node[root].y, k - node[node[root].x].size - 1);
 }
 
 void FHQ_Treap::ins(int val)
