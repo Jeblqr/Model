@@ -17,13 +17,14 @@ class FHQ_Treap
     int find_kth(int root, int k);
 
 public:
-    FHQ_Treap() : seed(20050103){};
+    FHQ_Treap() : seed(20050103) { ins(2147483647), ins(-2147483647); };
     void ins(int val);
     void del(int val);
     int rank(int val);
     int find_kth(int k);
     int pre(int val);
     int nxt(int val);
+#undef Maxn
 };
 
 int FHQ_Treap::rand()
@@ -112,12 +113,12 @@ int FHQ_Treap::rank(int val)
     split(ROOT, val - 1, x, y);
     int ans = node[x].size + 1;
     ROOT = merge(x, y);
-    return ans;
+    return ans - 1;
 }
 
 int FHQ_Treap::find_kth(int k)
 {
-    return node[find_kth(ROOT, k)].val;
+    return node[find_kth(ROOT, k + 1)].val;
 }
 
 int FHQ_Treap::pre(int val)
@@ -138,56 +139,9 @@ int FHQ_Treap::nxt(int val)
     return ans;
 }
 
-inline int read()
-{
-    int x = 0, f = 1;
-    char c = getchar();
-    while (c > '9' || c < '0')
-    {
-        if (c == '-')
-            f = -1;
-        c = getchar();
-    }
-    while (c >= '0' && c <= '9')
-    {
-        x = x * 10 + c - '0';
-        c = getchar();
-    }
-    return x * f;
-}
-
 FHQ_Treap t;
 
 int main()
 {
-    int n;
-    n = read();
-    while (n--)
-    {
-        int opt, x;
-        opt = read();
-        x = read();
-        switch (opt)
-        {
-        case 1:
-            t.ins(x);
-            break;
-        case 2:
-            t.del(x);
-            break;
-        case 3:
-            cout << t.rank(x) << endl;
-            break;
-        case 4:
-            cout << t.find_kth(x) << endl;
-            break;
-        case 5:
-            cout << t.pre(x) << endl;
-            break;
-        case 6:
-            cout << t.nxt(x) << endl;
-            break;
-        }
-    }
     return 0;
 }
