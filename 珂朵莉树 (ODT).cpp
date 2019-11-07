@@ -35,7 +35,7 @@ set<ChthollyTree::Node>::iterator ChthollyTree::split(int pos)
 
 void ChthollyTree::assign(int l, int r, long long val)
 {
-	set<Node>::iterator it_l = split(l), it_r = split(r + 1);
+	set<Node>::iterator it_r = split(r + 1), it_l = split(l);
 	st.erase(it_l, it_r);
 	st.insert(Node{l, r, val});
 }
@@ -60,7 +60,7 @@ private:
 public:
 	void assign(int l, int r, long long val)
 	{
-		set<Node>::iterator it_l = split(l), it_r = split(r + 1);
+		set<Node>::iterator it_r = split(r + 1), it_l = split(l);
 		st.erase(it_l, it_r);
 		st.insert(Node{l, r, val});
 	}
@@ -70,13 +70,13 @@ public:
 	}
 	void add(int l, int r, int val)
 	{
-		set<Node>::iterator it_l = split(l), it_r = split(r + 1);
+		set<Node>::iterator it_r = split(r + 1), it_l = split(l);
 		for (; it_l != it_r; it_l++)
 			it_l->val += val;
 	}
 	long long find_kth(int l, int r, int k)
 	{
-		set<Node>::iterator it_l = split(l), it_r = split(r + 1);
+		set<Node>::iterator it_r = split(r + 1), it_l = split(l);
 		vector<pair<long long, int>> vec;
 		for (; it_l != it_r; it_l++)
 			vec.push_back(make_pair(it_l->val, it_l->r - it_l->l + 1));
@@ -91,7 +91,7 @@ public:
 	}
 	long long power(int l, int r, int x, int mod)
 	{
-		set<Node>::iterator it_l = split(l), it_r = split(r + 1);
+		set<Node>::iterator it_r = split(r + 1), it_l = split(l);
 		long long ans = 0;
 		for (; it_l != it_r; it_l++)
 		ans = (ans + ((long long)(it_l->r - it_l->l + 1)) * power(it_l->val, (long long)x, (long long)mod)) % mod;
